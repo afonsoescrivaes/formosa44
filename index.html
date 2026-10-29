@@ -604,9 +604,21 @@ $("form").addEventListener("submit",async e=>{
     const data={name:n,email:m,_replyto:m,apartamentos:$("fApts").value,mensagem:$("fMsg").value.trim()||"(sem mensagem)",_subject:"Formosa 44 · pedido de "+n,_template:"table",_captcha:"false",_honey:$("form").elements._honey.value};
     const r=await fetch("https://formsubmit.co/ajax/"+TO(),{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(data)});
     const j=await r.json().catch(()=>({}));
-    if(!r.ok||String(j.success)!=="true") throw new Error(j.message||"erro");
+    if(String(j.success)!=="true"){
+      if(/activat/i.test(j.message||"")){ err("O formulário está a aguardar ativação pelo proprietário. Tente novamente mais tarde."); btn.disabled=false; btn.innerHTML='Enviar pedido <span class="arrow">→</span>'; return; }
+      throw new Error(j.message||"erro");
+    }
     $("fOkMail").textContent=m; $("form").hidden=true; $("fOk").hidden=false;
-  }catch(x){ err("Não foi possível enviar agora. Verifique a ligação à internet e tente de novo."); }
+  }catch(x){
+    // Alternativa: envio clássico (abre a página de confirmação e volta ao site)
+    try{ sessionStorage.setItem("f44mail",m) }catch(e){}
+    const f=document.createElement("form"); f.method="POST"; f.action="https://formsubmit.co/"+TO(); f.style.display="none";
+    const add=(k,v)=>{const i=document.createElement("input");i.type="hidden";i.name=k;i.value=v;f.appendChild(i)};
+    add("name",n);add("email",m);add("apartamentos",$("fApts").value);add("mensagem",$("fMsg").value.trim()||"(sem mensagem)");
+    add("_subject","Formosa 44 · pedido de "+n);add("_template","table");add("_captcha","false");
+    add("_next",location.href.split("#")[0]+"#enviado");
+    document.body.appendChild(f); f.submit(); return;
+  }
   btn.disabled=false; btn.innerHTML='Enviar pedido <span class="arrow">→</span>';
 });
 $("fAgain").onclick=()=>{ $("form").reset(); $("fOk").hidden=true; $("form").hidden=false; };
@@ -635,6 +647,7 @@ function onScroll(){
 }
 addEventListener("scroll",onScroll,{passive:true}); addEventListener("resize",onScroll);
 renderList(); onScroll(); route();
+if(location.hash==="#enviado"){ let m=""; try{m=sessionStorage.getItem("f44mail")||""}catch(e){} $("fOkMail").textContent=m||"o seu e-mail"; $("form").hidden=true; $("fOk").hidden=false; setTimeout(()=>$("contacto").scrollIntoView(),300); try{history.replaceState(null,"",location.pathname)}catch(e){} }
 </script>
 
 </body>
