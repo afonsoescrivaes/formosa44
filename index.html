@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formosa 44</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;500&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: site de empreendimento — intro, hero de ecrã inteiro, manifesto, números, alçado interativo + lista de frações com painel lateral, galeria horizontal, acabamentos, localização, contacto.
+   Visual único e deliberado (noite quente + areia da brochura), igual em tema claro e escuro. */
+:root{
+  --night:#141210; --night-2:#1d1a17; --night-3:#2a2622;
+  --sand:#e6dccd; --sand-2:#d9ccb8; --paper:#f4eee5;
+  --ink:#1c1916; --ink-2:#5f564d; --mute-d:#a89c8f;
+  --terra:#b8735c; --terra-l:#d99a82; --ok:#3f7d55; --line-d:rgba(230,220,205,.14); --line-l:rgba(28,25,22,.14);
+  --display:"Barlow Condensed","Arial Narrow",ui-sans-serif,sans-serif;
+  --body:"Manrope",ui-sans-serif,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.22,.8,.16,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--night);color:var(--sand);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.gut{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.in{max-width:1240px;margin:0 auto}
+a{color:inherit}
+img{display:block;max-width:100%}
+.label{font:500 12px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--terra-l)}
+.light .label{color:var(--terra)}
+.h-xl{font:200 clamp(44px,7.4vw,108px)/.92 var(--display);text-transform:uppercase;letter-spacing:.01em;margin:0;text-wrap:balance}
+.h-l{font:300 clamp(36px,5.2vw,72px)/.95 var(--display);text-transform:uppercase;letter-spacing:.01em;margin:.3em 0 .4em;text-wrap:balance}
+.lead{font-size:17px;max-width:56ch;color:var(--mute-d);margin:0}
+.light{background:var(--paper);color:var(--ink);color-scheme:light}
+.light .lead{color:var(--ink-2)}
+section{padding-block:clamp(72px,11vw,150px)}
+:focus-visible{outline:2px solid var(--terra-l);outline-offset:3px}
+
+/* Intro */
+.intro{position:fixed;inset:0;z-index:50;background:var(--night);display:grid;place-items:center;animation:introOut .9s 1.5s var(--ease) forwards;pointer-events:none}
+.intro span{font:300 clamp(40px,8vw,90px)/1 var(--display);letter-spacing:.42em;color:var(--sand);display:flex;overflow:hidden;padding-left:.42em}
+.intro span i{font-style:normal;display:inline-block;animation:letter .8s var(--ease) both;animation-delay:calc(var(--d)*55ms + .1s)}
+@keyframes letter{from{transform:translateY(105%)}}
+@keyframes introOut{to{transform:translateY(-100%);visibility:hidden}}
+
+/* Barra */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--night)}
+.bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:30;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+.bar.solid{background:rgba(20,18,16,.86);backdrop-filter:blur(14px);border-color:var(--line-d)}
+.bar .in{display:flex;align-items:center;height:72px;gap:28px}
+.logo{font:400 22px var(--display);letter-spacing:.32em;text-decoration:none;color:var(--sand)}
+.bar nav{display:flex;gap:28px;margin-left:auto}
+.bar nav a{font:500 12px var(--mono);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--sand);opacity:.75;transition:opacity .2s}
+.bar nav a:hover{opacity:1}
+@media (max-width:860px){.bar nav{display:none}.bar .cta{margin-left:auto}}
+.cta{display:inline-flex;align-items:center;gap:10px;font:600 13px var(--body);letter-spacing:.04em;text-decoration:none;padding:12px 20px;border:1px solid rgba(230,220,205,.4);border-radius:999px;transition:background .3s,color .3s,border-color .3s;white-space:nowrap;cursor:pointer;background:transparent;color:inherit}
+.cta:hover{background:var(--sand);color:var(--night);border-color:var(--sand)}
+.cta.fill{background:var(--terra);border-color:var(--terra);color:#fff}
+.cta.fill:hover{background:var(--terra-l);border-color:var(--terra-l);color:var(--night)}
+.light .cta{border-color:var(--line-l)} .light .cta:hover{background:var(--ink);color:var(--paper)}
+.cta[aria-disabled="true"]{opacity:.4;pointer-events:none}
+.arrow{display:inline-block;transition:transform .3s var(--ease)} .cta:hover .arrow{transform:translateX(4px)}
+
+/* Hero */
+.hero{position:relative;height:min(94vh,900px);min-height:560px;overflow:hidden}
+.hero .bg{position:absolute;inset:-4% 0 0;background:url(img/fachada.jpg) center 60%/cover;animation:kb 18s ease-out both;will-change:transform}
+@keyframes kb{from{transform:scale(1.14)}to{transform:scale(1.02)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,16,.55) 0%,rgba(20,18,16,0) 30%,rgba(20,18,16,.15) 55%,rgba(20,18,16,.92) 100%)}
+.hero .copy{position:absolute;inset:auto 0 0;z-index:2;padding-block:0 52px}
+.hero .copy .in{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:28px}
+@media (max-width:760px){.hero .copy .in{grid-template-columns:1fr}}
+.hero h1{font:200 clamp(70px,14vw,210px)/.8 var(--display);margin:26px 0 0;letter-spacing:.02em;text-transform:uppercase}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .ln span{display:block;animation:rise 1.3s var(--ease) both}
+.hero h1 .ln:nth-child(1) span{animation-delay:1.65s} .hero h1 .ln:nth-child(2) span{animation-delay:1.78s}
+@keyframes rise{from{transform:translateY(100%)}}
+.hero .fade{animation:fadeUp 1.2s 2s var(--ease) both}
+@keyframes fadeUp{from{opacity:.0;transform:translateY(16px)}}
+.hero aside{max-width:340px;display:grid;gap:18px;justify-items:start}
+.hero aside p{margin:0;color:#e9dfd2;font-size:15.5px}
+.avail{display:flex;align-items:center;gap:12px;font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.avail .dot{width:8px;height:8px;border-radius:50%;background:#7fb08c;box-shadow:0 0 0 0 rgba(127,176,140,.6);animation:pulse 2.2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(127,176,140,0)}100%{box-shadow:0 0 0 0 rgba(127,176,140,0)}}
+.scroll{position:absolute;right:max(20px,env(safe-area-inset-right,0px));top:50%;z-index:2;writing-mode:vertical-rl;font:500 11px var(--mono);letter-spacing:.3em;text-transform:uppercase;display:flex;align-items:center;gap:14px;opacity:.7}
+.scroll::after{content:"";width:1px;height:70px;background:linear-gradient(var(--sand),transparent);animation:drip 2.4s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:760px){.scroll{display:none}}
+
+/* Manifesto */
+.manifest p{font:300 clamp(30px,4.3vw,60px)/1.12 var(--display);margin:22px 0 0;max-width:22ch;letter-spacing:.005em}
+.manifest p .w{opacity:.22;transition:opacity .5s}
+.manifest p .w.on{opacity:1}
+.manifest p em{font-style:normal;color:var(--terra-l)}
+
+/* Números */
+.nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line-d);margin-top:clamp(56px,8vw,96px)}
+@media (max-width:760px){.nums{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.nums div{padding:26px 18px 0 0;border-right:1px solid var(--line-d)}
+.nums div:last-child{border-right:0}
+.nums div+div{padding-left:18px}
+@media (max-width:760px){.nums div:nth-child(2){border-right:0}.nums div:nth-child(3){padding-left:0}.nums div:nth-child(n+3){border-top:1px solid var(--line-d);margin-top:26px}}
+.nums b{display:block;font:200 clamp(54px,7vw,96px)/1 var(--display);font-variant-numeric:tabular-nums;color:var(--sand)}
+.nums span{font:500 11.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute-d)}
+
+/* Imagem paralaxe */
+.plx{height:clamp(380px,70vh,720px);overflow:hidden;position:relative}
+.plx img{position:absolute;left:0;top:-15%;width:100%;height:130%;object-fit:cover;will-change:transform}
+.plx .tag{position:absolute;left:max(20px,env(safe-area-inset-left,0px));bottom:22px;font:500 11px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:#fff;opacity:.85}
+
+/* Residências */
+.res-top{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.res-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,4vw,64px);margin-top:48px;align-items:start}
+@media (max-width:980px){.res-grid{grid-template-columns:1fr}}
+.elev{position:sticky;top:100px}
+@media (max-width:980px){.elev{position:static}}
+.elev svg{width:100%;height:auto;overflow:visible}
+.elev .stroke{fill:none;stroke:var(--terra);stroke-width:1.3;stroke-linejoin:round}
+.elev .thin{fill:none;stroke:var(--terra);stroke-width:.8;opacity:.75}
+.elev .band{fill:var(--terra);opacity:0;transition:opacity .35s;cursor:pointer}
+.elev .floor{cursor:pointer}
+.elev .floor:hover .band{opacity:.08}
+.elev .floor.sel .band{opacity:.16}
+.elev .floor:focus-visible{outline:none}
+.elev .floor:focus-visible .band{opacity:.16;stroke:var(--terra);stroke-width:1.5}
+.elev text{font-family:var(--mono);font-size:11px;fill:var(--ink-2);letter-spacing:.08em}
+.elev .draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.elev-note{font-size:12.5px;color:var(--ink-2);margin-top:14px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line-l);margin-bottom:4px}
+.tab{all:unset;cursor:pointer;font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:12px 14px 13px;color:var(--ink-2);position:relative}
+.tab::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:2px;background:var(--terra);transform:scaleX(0);transition:transform .35s var(--ease)}
+.tab[aria-pressed="true"]{color:var(--ink)} .tab[aria-pressed="true"]::after{transform:scaleX(1)}
+.tab:focus-visible{outline:2px solid var(--terra)}
+.sw{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2);margin:14px 0 6px;cursor:pointer}
+.sw input{accent-color:var(--terra);width:16px;height:16px}
+.list{list-style:none;margin:0;padding:0}
+.row{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:64px 1fr 80px 104px 112px 22px;align-items:center;gap:12px;padding:20px 4px;border-bottom:1px solid var(--line-l);position:relative;transition:padding .35s var(--ease),background .3s}
+.row:hover,.row:focus-visible{padding-left:16px;background:rgba(184,115,92,.06)}
+.row:focus-visible{outline:2px solid var(--terra);outline-offset:-2px}
+.row .L{font:200 44px/1 var(--display);color:var(--terra)}
+.row .t b{display:block;font:500 20px/1.15 var(--display);letter-spacing:.04em;text-transform:uppercase}
+.row .t span{font-size:13px;color:var(--ink-2)}
+.row .c{font:500 13px var(--mono);font-variant-numeric:tabular-nums}
+.row .c small{display:block;font-size:10px;letter-spacing:.14em;color:var(--ink-2);text-transform:uppercase;margin-bottom:2px}
+.st{display:inline-flex;align-items:center;gap:7px;font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.st::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.st.d{color:var(--ok)} .st.v{color:var(--terra)}
+.row.sold{opacity:.5}
+.row .go{font-size:18px;transition:transform .3s var(--ease)} .row:hover .go{transform:translateX(4px)}
+@media (max-width:640px){.row{grid-template-columns:48px 1fr auto;gap:10px}.row .L{font-size:36px}.row .c.hide-s{display:none}.row .go{display:none}}
+.empty{padding:28px 4px;color:var(--ink-2)}
+.peek{position:fixed;z-index:20;left:0;top:0;width:280px;aspect-ratio:4/5;pointer-events:none;border-radius:4px;overflow:hidden;opacity:0;transition:opacity .3s;box-shadow:0 30px 60px -20px rgba(0,0,0,.45)}
+.peek.on{opacity:1}
+.peek img{width:100%;height:100%;object-fit:cover}
+@media (hover:none),(max-width:980px){.peek{display:none}}
+
+/* Painel lateral */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(14,12,10,.55);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .45s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;z-index:41;top:0;right:0;bottom:0;width:min(600px,100%);background:var(--paper);color:var(--ink);color-scheme:light;transform:translateX(102%);transition:transform .6s var(--ease),visibility 0s .6s;visibility:hidden;overflow-y:auto;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer.on{transform:none;visibility:visible;transition:transform .6s var(--ease)}
+.dclose{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:calc(14px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) 14px 24px;background:rgba(244,238,229,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-l)}
+.dclose span{font:500 11.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2)}
+.xbtn{all:unset;cursor:pointer;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-l);font-size:20px;transition:transform .3s}
+.xbtn:hover{transform:rotate(90deg)} .xbtn:focus-visible{outline:2px solid var(--terra)}
+.dimg{position:relative;aspect-ratio:4/3;max-width:100%;overflow:hidden;background:var(--sand-2)}
+.dimg img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 1.4s var(--ease)}
+.drawer.on .dimg img{transform:scale(1)}
+.dimg .ribbon{position:absolute;inset:0;display:grid;place-items:center;background:rgba(20,18,16,.42)}
+.dimg .ribbon span{font:300 34px var(--display);letter-spacing:.5em;color:#fff;padding-left:.5em;border-top:1px solid #fff;border-bottom:1px solid #fff;padding-block:6px}
+.dimg .cap{position:absolute;left:16px;bottom:14px;font:500 10.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.dbody{padding:30px 24px 36px;display:grid;gap:26px;padding-right:max(24px,env(safe-area-inset-right,0px))}
+.dhead{display:flex;gap:18px;align-items:flex-end}
+.dhead .L{font:200 118px/.74 var(--display);color:var(--terra)}
+.dhead h3{font:300 36px/1 var(--display);text-transform:uppercase;margin:0 0 6px;letter-spacing:.02em}
+.dhead p{margin:0;color:var(--ink-2);font-size:14.5px}
+.specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line-l)}
+.specs div{padding:14px 0;border-bottom:1px solid var(--line-l)}
+.specs div:nth-child(odd){padding-right:14px}
+.specs small{display:block;font:500 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);margin-bottom:4px}
+.specs strong{font:400 24px var(--display);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.gp{border-left:2px solid var(--terra);padding:4px 0 4px 14px;font-size:14.5px}
+.gp b{color:var(--terra)}
+.go-u{all:unset;cursor:pointer;color:var(--terra);text-decoration:underline;font-weight:600}
+.go-u:focus-visible{outline:2px solid var(--terra)}
+.plan{border:1px solid var(--line-l);background:#fff;cursor:zoom-in;position:relative;display:block;width:100%;padding:0}
+.plan img{width:100%}
+.plan span{position:absolute;right:10px;bottom:10px;font:500 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:6px 10px}
+.buy{background:var(--night);color:var(--sand);border-radius:4px;overflow:hidden}
+.buy .pr{padding:26px 24px 22px;border-bottom:1px solid var(--line-d)}
+.buy small{display:block;font:500 10.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mute-d);margin-bottom:8px}
+.buy .pr b{font:200 clamp(46px,9vw,64px)/1 var(--display);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.buy .ct{padding:22px 24px 24px;display:grid;gap:14px}
+.buy .ct p{margin:0;font:300 26px/1.1 var(--display);text-transform:uppercase;letter-spacing:.03em}
+.buy .ph{font:500 16px var(--mono);user-select:all;color:var(--sand)}
+.dacts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dacts .cta{justify-content:center;padding:15px}
+@media (max-width:480px){.dacts{grid-template-columns:1fr}}
+
+/* Galeria horizontal */
+.hs{position:relative;height:340vh}
+.hs .pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:34px}
+.hs .track{display:flex;gap:22px;will-change:transform;padding-left:max(20px,env(safe-area-inset-left,0px))}
+.hs figure{margin:0;flex:none;width:clamp(280px,30vw,460px)}
+.hs figure:nth-child(even){margin-top:7vh}
+.hs figure .im{overflow:hidden;aspect-ratio:4/5;max-width:100%}
+.hs figure img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.hs figure:hover img{transform:scale(1.05)}
+.hs figcaption{display:flex;justify-content:space-between;font:500 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute-d);margin-top:12px}
+.hs .prog{height:1px;background:var(--line-d);margin:0 max(20px,env(safe-area-inset-right,0px)) 0 max(20px,env(safe-area-inset-left,0px))}
+.hs .prog i{display:block;height:1px;background:var(--sand);width:0}
+@media (max-width:760px),(prefers-reduced-motion:reduce){
+  .hs{height:auto;padding-block:80px}.hs .pin{position:static;height:auto}
+  .hs .track{overflow-x:auto;scroll-snap-type:x mandatory;padding-right:20px;transform:none!important}
+  .hs figure{width:78vw;scroll-snap-align:start}.hs figure:nth-child(even){margin-top:0}.hs .prog{display:none}}
+
+/* Acabamentos */
+.fin{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:start}
+@media (max-width:860px){.fin{grid-template-columns:1fr}}
+.fin .im{position:sticky;top:110px;overflow:hidden;aspect-ratio:4/5;max-width:100%}
+@media (max-width:860px){.fin .im{position:static;aspect-ratio:4/3}}
+.fin .im img{width:100%;height:100%;object-fit:cover}
+.fl{list-style:none;margin:30px 0 0;padding:0}
+.fl li{display:grid;grid-template-columns:180px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--line-l)}
+@media (max-width:520px){.fl li{grid-template-columns:1fr;gap:4px}}
+.fl b{font:400 21px/1.15 var(--display);text-transform:uppercase;letter-spacing:.04em}
+.fl span{color:var(--ink-2);font-size:15px}
+
+/* Localização */
+.loc{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center;margin-top:44px}
+@media (max-width:860px){.loc{grid-template-columns:1fr}}
+.map{position:relative;overflow:hidden}
+.map img{width:100%;filter:saturate(.75) contrast(1.05)}
+.pin-dot{position:absolute;left:58.6%;top:41%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--terra);box-shadow:0 0 0 4px rgba(255,255,255,.85)}
+.pin-dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--terra);animation:ring 2.4s infinite}
+@keyframes ring{from{transform:scale(1);opacity:1}to{transform:scale(4);opacity:0}}
+.addr{font:300 clamp(28px,3vw,40px)/1.1 var(--display);text-transform:uppercase;letter-spacing:.03em;margin:0 0 20px}
+
+/* Contacto */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px)}
+@media (max-width:860px){.contact{grid-template-columns:1fr}}
+form{display:grid;gap:18px}
+.f{display:grid;gap:6px}
+.f label{font:500 10.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mute-d)}
+.f input,.f select,.f textarea{font:400 16px var(--body);color:var(--sand);background:transparent;border:0;border-bottom:1px solid rgba(230,220,205,.3);padding:10px 0;border-radius:0;transition:border-color .3s}
+.f select option{background:var(--night-2)}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--terra-l)}
+.f textarea{resize:vertical;min-height:84px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+.err{color:var(--terra-l);font-size:13.5px;margin:0}
+.note{font-size:12px;color:var(--mute-d);margin:0}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.opt{text-transform:none;letter-spacing:0;font-family:var(--body);opacity:.7}
+fieldset.picks{border:0;margin:0;padding:0;min-width:0}
+fieldset.picks legend{font:500 10.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mute-d);padding:0;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.f .pick{position:relative;cursor:pointer;font:400 13.5px var(--body);letter-spacing:0;text-transform:none;color:var(--sand)}
+.pick input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.pick span{display:inline-block;font-size:13.5px;padding:9px 14px;border-radius:999px;border:1px solid rgba(230,220,205,.28);color:var(--sand);transition:background .25s,border-color .25s,color .25s;font-variant-numeric:tabular-nums}
+.pick span b{font-weight:700;margin-right:2px}
+.pick:hover span{border-color:var(--sand)}
+.pick input:checked+span{background:var(--sand);color:var(--night);border-color:var(--sand)}
+.pick input:focus-visible+span{outline:2px solid var(--terra-l);outline-offset:2px}
+.sent{display:grid;gap:14px;align-content:start;border-top:1px solid var(--line-d);padding-top:24px}
+.sent p{margin:0;font:300 30px/1.15 var(--display)}
+button.cta:disabled{opacity:.6;cursor:wait}
+footer{border-top:1px solid var(--line-d);padding-block:32px;font-size:12.5px;color:var(--mute-d)}
+footer .in{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* Plantas ampliadas */
+dialog{border:0;padding:0;background:#fff;max-width:min(1100px,94vw);width:100%;color:var(--ink)}
+dialog::backdrop{background:rgba(14,12,10,.82)}
+dialog .dh{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line-l);font:500 11.5px var(--mono);letter-spacing:.16em;text-transform:uppercase}
+
+/* Revelar ao rolar (parte de um estado visível) */
+.rv{transition:transform 1.1s var(--ease),opacity 1.1s var(--ease)}
+.rv.pre{transform:translateY(34px);opacity:.3}
+.mask{overflow:hidden}
+.mask img{transition:transform 1.6s var(--ease)}
+.mask.pre img{transform:scale(1.15)}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}html{scroll-behavior:auto}.intro{display:none}.manifest p .w{opacity:1}}
+</style>
+</head>
+<body>
+
+
+<div class="intro" aria-hidden="true"><span id="introTxt"><i style="--d:0">F</i><i style="--d:1">O</i><i style="--d:2">R</i><i style="--d:3">M</i><i style="--d:4">O</i><i style="--d:5">S</i><i style="--d:6">A</i><i style="--d:7">&nbsp;</i><i style="--d:8">4</i><i style="--d:9">4</i></span></div>
+
+<header class="bar gut solid" id="bar">
+  <div class="in">
+    <a class="logo" href="#topo" aria-label="Formosa 44, início">FORMOSA 44</a>
+    <nav aria-label="Secções"><a href="#residencias">Residências</a><a href="#interiores">Interiores</a><a href="#acabamentos">Acabamentos</a><a href="#localizacao">Localização</a></nav>
+    <a class="cta" href="#contacto">Marcar visita <span class="arrow">→</span></a>
+  </div>
+</header>
+
+<div class="hero" id="topo">
+  <div class="bg" id="heroBg" role="img" aria-label="Fachada do Formosa 44 na esquina da Rua Formosa com a Rua Dr. Alves da Veiga"></div>
+  <div class="scroll">Descobrir</div>
+  <div class="copy gut"><div class="in">
+    <div>
+      <div class="label fade">Rua Formosa · Porto</div>
+      <h1><span class="ln"><span>Formosa</span></span><span class="ln"><span>44</span></span></h1>
+    </div>
+    <aside class="fade">
+      <p>Dezanove apartamentos e uma loja num edifício de gaveto no centro do Porto. Apartamentos T1, T0+1 e T1+1 com acabamentos de qualidade.</p>
+      <div class="avail"><span class="dot"></span><span id="availTxt">9 apartamentos disponíveis</span></div>
+      <a class="cta fill" href="#residencias">Ver residências <span class="arrow">→</span></a>
+    </aside>
+  </div></div>
+</div>
+
+<section class="manifest gut"><div class="in">
+  <div class="label">O edifício</div>
+  <p id="manifest">Uma esquina do centro do Porto, construída de raiz. Fachada clássica em <em>pedra e reboco</em>, águas-furtadas em zinco e, por dentro, soalho de <em>carvalho maciço</em>, cozinhas equipadas e luz de poente.</p>
+  <div class="nums">
+    <div><b data-n="19">19</b><span>Apartamentos</span></div>
+    <div><b data-n="4">4</b><span>Pisos</span></div>
+    <div><b data-n="1">1</b><span>Loja</span></div>
+    <div><b data-n="9" id="numLeft">9</b><span>Ainda disponíveis</span></div>
+  </div>
+</div></section>
+
+<div class="plx mask" id="plx"><img src="img/fachada2.jpg" alt="Fachada do Formosa 44 vista ao longo da rua" loading="lazy"><div class="tag">Fachada frontal · imagem 3D</div></div>
+
+<section class="light gut" id="residencias"><div class="in">
+  <div class="res-top">
+    <div><div class="label">Residências</div><h2 class="h-l rv">Escolha a sua casa</h2></div>
+    <p class="lead rv">Selecione um piso no alçado ou uma fração da lista para ver o interior, a planta e o preço.</p>
+  </div>
+  <div class="res-grid">
+    <div class="elev rv">
+      <svg id="elev" viewBox="0 0 560 440" role="group" aria-label="Alçado do edifício por pisos"><path d="M40 400 V150 L58 72 H452 L470 150 V400" class="stroke draw" pathLength="1"></path><line x1="30" y1="400" x2="480" y2="400" class="stroke"></line><line x1="40" y1="150" x2="470" y2="150" class="thin"></line><line x1="40" y1="230" x2="470" y2="230" class="thin"></line><line x1="40" y1="310" x2="470" y2="310" class="thin"></line><g class="floor" tabindex="0" role="button" data-p="0" aria-label="Rés-do-chão: 4 disponíveis"><rect x="40" y="310" width="430" height="90" class="band"></rect><rect x="71.5" y="338" width="16" height="40" class="thin"></rect><rect x="110.5" y="338" width="16" height="40" class="thin"></rect><rect x="149.5" y="338" width="16" height="40" class="thin"></rect><rect x="188.5" y="332" width="16" height="68" class="thin"></rect><rect x="227.5" y="338" width="16" height="40" class="thin"></rect><rect x="266.5" y="338" width="16" height="40" class="thin"></rect><rect x="305.5" y="338" width="16" height="40" class="thin"></rect><rect x="344.5" y="338" width="16" height="40" class="thin"></rect><rect x="383.5" y="338" width="16" height="40" class="thin"></rect><rect x="422.5" y="338" width="16" height="40" class="thin"></rect><circle cx="496" cy="355" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="509" cy="355" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><circle cx="522" cy="355" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><circle cx="535" cy="355" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><circle cx="548" cy="355" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><text x="6" y="359">R/C</text></g><g class="floor" tabindex="0" role="button" data-p="1" aria-label="1º piso: 2 disponíveis"><rect x="40" y="230" width="430" height="80" class="band"></rect><rect x="70.5" y="246" width="18" height="42" class="thin"></rect><rect x="67.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="109.5" y="246" width="18" height="42" class="thin"></rect><rect x="106.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="148.5" y="246" width="18" height="42" class="thin"></rect><rect x="145.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="187.5" y="246" width="18" height="42" class="thin"></rect><rect x="184.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="226.5" y="246" width="18" height="42" class="thin"></rect><rect x="223.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="265.5" y="246" width="18" height="42" class="thin"></rect><rect x="262.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="304.5" y="246" width="18" height="42" class="thin"></rect><rect x="301.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="343.5" y="246" width="18" height="42" class="thin"></rect><rect x="340.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="382.5" y="246" width="18" height="42" class="thin"></rect><rect x="379.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="421.5" y="246" width="18" height="42" class="thin"></rect><rect x="418.5" y="243" width="24" height="48" class="thin" opacity="0.4"></rect><circle cx="496" cy="270" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><circle cx="509" cy="270" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="522" cy="270" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="535" cy="270" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="548" cy="270" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><text x="6" y="274">1º</text></g><g class="floor" tabindex="0" role="button" data-p="2" aria-label="2º piso: 2 disponíveis"><rect x="40" y="150" width="430" height="80" class="band"></rect><rect x="70.5" y="166" width="18" height="42" class="thin"></rect><rect x="67.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="109.5" y="166" width="18" height="42" class="thin"></rect><rect x="106.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="148.5" y="166" width="18" height="42" class="thin"></rect><rect x="145.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="187.5" y="166" width="18" height="42" class="thin"></rect><rect x="184.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="226.5" y="166" width="18" height="42" class="thin"></rect><rect x="223.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="265.5" y="166" width="18" height="42" class="thin"></rect><rect x="262.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="304.5" y="166" width="18" height="42" class="thin"></rect><rect x="301.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="343.5" y="166" width="18" height="42" class="thin"></rect><rect x="340.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="382.5" y="166" width="18" height="42" class="thin"></rect><rect x="379.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><rect x="421.5" y="166" width="18" height="42" class="thin"></rect><rect x="418.5" y="163" width="24" height="48" class="thin" opacity="0.4"></rect><circle cx="496" cy="190" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><circle cx="509" cy="190" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="522" cy="190" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="535" cy="190" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="548" cy="190" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><text x="6" y="194">2º</text></g><g class="floor" tabindex="0" role="button" data-p="3" aria-label="3º piso · águas-furtadas: 1 disponíveis"><rect x="50" y="72" width="410" height="78" class="band"></rect><path d="M70.5 136 V106 L79.5 94 L88.5 106 V136" class="thin"></path><path d="M109.5 136 V106 L118.5 94 L127.5 106 V136" class="thin"></path><path d="M148.5 136 V106 L157.5 94 L166.5 106 V136" class="thin"></path><path d="M187.5 136 V106 L196.5 94 L205.5 106 V136" class="thin"></path><path d="M226.5 136 V106 L235.5 94 L244.5 106 V136" class="thin"></path><path d="M265.5 136 V106 L274.5 94 L283.5 106 V136" class="thin"></path><path d="M304.5 136 V106 L313.5 94 L322.5 106 V136" class="thin"></path><path d="M343.5 136 V106 L352.5 94 L361.5 106 V136" class="thin"></path><path d="M382.5 136 V106 L391.5 94 L400.5 106 V136" class="thin"></path><path d="M421.5 136 V106 L430.5 94 L439.5 106 V136" class="thin"></path><circle cx="496" cy="111" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="509" cy="111" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="522" cy="111" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="535" cy="111" r="4.2" fill="none" stroke="#b8735c" stroke-width="1.2"></circle><circle cx="548" cy="111" r="4.2" fill="#3f7d55" stroke="#3f7d55" stroke-width="1.2"></circle><text x="6" y="115">3º</text></g><text x="40" y="56">● livre ○ vendido</text></svg>
+      <p class="elev-note">Alçado ilustrativo. Cada faixa corresponde a um piso; toque para filtrar a lista.</p>
+    </div>
+    <div>
+      <div class="tabs" id="tabs" role="group" aria-label="Filtrar por tipologia"><button class="tab" data-t="Todos" aria-pressed="true">Todos</button><button class="tab" data-t="T1" aria-pressed="false">T1</button><button class="tab" data-t="T0+1" aria-pressed="false">T0+1</button><button class="tab" data-t="T1+1" aria-pressed="false">T1+1</button><button class="tab" data-t="Loja" aria-pressed="false">Loja</button></div>
+      <label class="sw" for="showSold"><input type="checkbox" id="showSold" checked> Mostrar frações vendidas</label>
+      <noscript><p class="elev-note">Para abrir cada apartamento, abra esta página no Safari ou no Chrome.</p></noscript>
+<ul class="list" id="list"><li><button class="row" data-f="B"><span class="L">B</span><span class="t"><b>T0+1</b><span>Rés-do-chão</span></span><span class="c hide-s"><small>Área</small>65,01 m²</span><span class="c hide-s"><small>Orientação</small>Poente/Norte</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row" data-f="C"><span class="L">C</span><span class="t"><b>T1</b><span>Rés-do-chão</span></span><span class="c hide-s"><small>Área</small>42,34 m²</span><span class="c hide-s"><small>Orientação</small>Poente</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row" data-f="D"><span class="L">D</span><span class="t"><b>T1</b><span>Rés-do-chão</span></span><span class="c hide-s"><small>Área</small>46,27 m²</span><span class="c hide-s"><small>Orientação</small>Poente</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row" data-f="E"><span class="L">E</span><span class="t"><b>T1+1</b><span>Rés-do-chão</span></span><span class="c hide-s"><small>Área</small>79,34 m²</span><span class="c hide-s"><small>Orientação</small>Poente/Sul</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row" data-f="F"><span class="L">F</span><span class="t"><b>T0+1</b><span>1º piso</span></span><span class="c hide-s"><small>Área</small>66,5 m²</span><span class="c hide-s"><small>Orientação</small>Norte/Sul</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row" data-f="J"><span class="L">J</span><span class="t"><b>T1+1</b><span>1º piso</span></span><span class="c hide-s"><small>Área</small>79,34 m²</span><span class="c hide-s"><small>Orientação</small>Poente/Sul</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row" data-f="K"><span class="L">K</span><span class="t"><b>T0+1</b><span>2º piso</span></span><span class="c hide-s"><small>Área</small>66,5 m²</span><span class="c hide-s"><small>Orientação</small>Norte/Sul</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row" data-f="O"><span class="L">O</span><span class="t"><b>T1+1</b><span>2º piso</span></span><span class="c hide-s"><small>Área</small>79,34 m²</span><span class="c hide-s"><small>Orientação</small>Poente/Sul</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row" data-f="T"><span class="L">T</span><span class="t"><b>T1+1</b><span>3º piso · águas-furtadas</span></span><span class="c hide-s"><small>Área</small>79,18 m²</span><span class="c hide-s"><small>Orientação</small>Poente/Sul</span><span class="st d">Disponível</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="A"><span class="L">A</span><span class="t"><b>Loja</b><span>Rés-do-chão</span></span><span class="c hide-s"><small>Área</small>40,25 m²</span><span class="c hide-s"><small>Orientação</small>Sul</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="G"><span class="L">G</span><span class="t"><b>T1</b><span>1º piso</span></span><span class="c hide-s"><small>Área</small>47,4 m²</span><span class="c hide-s"><small>Orientação</small>Poente/Sul</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="H"><span class="L">H</span><span class="t"><b>T1</b><span>1º piso</span></span><span class="c hide-s"><small>Área</small>42,01 m²</span><span class="c hide-s"><small>Orientação</small>Poente</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="I"><span class="L">I</span><span class="t"><b>T1</b><span>1º piso</span></span><span class="c hide-s"><small>Área</small>44,12 m²</span><span class="c hide-s"><small>Orientação</small>Poente</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="L"><span class="L">L</span><span class="t"><b>T1</b><span>2º piso</span></span><span class="c hide-s"><small>Área</small>47,4 m²</span><span class="c hide-s"><small>Orientação</small>Poente/Sul</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="M"><span class="L">M</span><span class="t"><b>T1</b><span>2º piso</span></span><span class="c hide-s"><small>Área</small>42,01 m²</span><span class="c hide-s"><small>Orientação</small>Poente</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="N"><span class="L">N</span><span class="t"><b>T1</b><span>2º piso</span></span><span class="c hide-s"><small>Área</small>44,12 m²</span><span class="c hide-s"><small>Orientação</small>Poente</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="P"><span class="L">P</span><span class="t"><b>T0+1</b><span>3º piso · águas-furtadas</span></span><span class="c hide-s"><small>Área</small>66,32 m²</span><span class="c hide-s"><small>Orientação</small>Norte/Sul</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="Q"><span class="L">Q</span><span class="t"><b>T1</b><span>3º piso · águas-furtadas</span></span><span class="c hide-s"><small>Área</small>46,67 m²</span><span class="c hide-s"><small>Orientação</small>Poente/Sul</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="R"><span class="L">R</span><span class="t"><b>T1</b><span>3º piso · águas-furtadas</span></span><span class="c hide-s"><small>Área</small>41,5 m²</span><span class="c hide-s"><small>Orientação</small>Poente</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li><li><button class="row sold" data-f="S"><span class="L">S</span><span class="t"><b>T1</b><span>3º piso · águas-furtadas</span></span><span class="c hide-s"><small>Área</small>43,68 m²</span><span class="c hide-s"><small>Orientação</small>Poente</span><span class="st v">Vendido</span><span class="go" aria-hidden="true">→</span></button></li></ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="hs" id="interiores">
+  <div class="pin">
+    <div class="gut"><div class="in" style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap">
+      <div><div class="label">Interiores</div><h2 class="h-l" style="margin-bottom:0">Luz, carvalho e linhas limpas</h2></div>
+      <p class="lead" style="max-width:38ch">Imagens 3D dos interiores, apartamento a apartamento.</p>
+    </div></div>
+    <div class="track" id="track"><figure><div class="im"><img src="img/int-gl.jpg" alt="Interior T1, Frações G e L" loading="lazy"></div><figcaption><span>T1</span><span>Frações G e L</span></figcaption></figure><figure><div class="im"><img src="img/int-q.jpg" alt="Interior Águas-furtadas, Fração Q" loading="lazy"></div><figcaption><span>Águas-furtadas</span><span>Fração Q</span></figcaption></figure><figure><div class="im"><img src="img/int-hm.jpg" alt="Interior Quarto, Frações H e M" loading="lazy"></div><figcaption><span>Quarto</span><span>Frações H e M</span></figcaption></figure><figure><div class="im"><img src="img/int-fkp.jpg" alt="Interior T0+1, Frações F, K e P" loading="lazy"></div><figcaption><span>T0+1</span><span>Frações F, K e P</span></figcaption></figure><figure><div class="im"><img src="img/int-e.jpg" alt="Interior T1+1 com jardim, Fração E" loading="lazy"></div><figcaption><span>T1+1 com jardim</span><span>Fração E</span></figcaption></figure><figure><div class="im"><img src="img/int-din.jpg" alt="Interior T1, Frações D, I e N" loading="lazy"></div><figcaption><span>T1</span><span>Frações D, I e N</span></figcaption></figure><figure><div class="im"><img src="img/int-jot.jpg" alt="Interior T1+1, Frações J, O e T" loading="lazy"></div><figcaption><span>T1+1</span><span>Frações J, O e T</span></figcaption></figure><figure><div class="im"><img src="img/int-c.jpg" alt="Interior T1, Fração C" loading="lazy"></div><figcaption><span>T1</span><span>Fração C</span></figcaption></figure><figure><div class="im"><img src="img/int-b.jpg" alt="Interior T0+1 com pátio, Fração B" loading="lazy"></div><figcaption><span>T0+1 com pátio</span><span>Fração B</span></figcaption></figure></div>
+    <div class="prog"><i id="prog"></i></div>
+  </div>
+</section>
+
+<section class="light gut" id="acabamentos"><div class="in fin">
+  <div class="im mask"><img src="img/int-fkp.jpg" alt="Sala e cozinha de um T0+1" loading="lazy"></div>
+  <div>
+    <div class="label">Acabamentos</div>
+    <h2 class="h-l rv">Construído para durar</h2>
+    <p class="lead rv">O que fica dentro das paredes, segundo o caderno de acabamentos do empreendimento.</p>
+    <ul class="fl">
+      <li class="rv"><b>Pavimento</b><span>Multicamadas de carvalho com 5 mm de madeira maciça, acabamento a verniz cera mate. Mármore creme nas casas de banho e zonas comuns.</span></li>
+      <li class="rv"><b>Caixilharia</b><span>Alumínio CORTIZO com rutura térmica e vidro duplo, anodizado RAL 7016.</span></li>
+      <li class="rv"><b>Cozinha</b><span>Equipada com forno, placa, máquina de lavar loiça e combinado tipo BALAY. Bancada em compacto branco, armários lacados ou em folha de carvalho.</span></li>
+      <li class="rv"><b>Roupeiros</b><span>Em todos os apartamentos, com interiores em melamina linho.</span></li>
+      <li class="rv"><b>Isolamento</b><span>Fachadas em sistema ETICS. Paredes e tetos em gesso cartonado com lã de rocha.</span></li>
+      <li class="rv"><b>Segurança</b><span>Porta de entrada de estrutura reforçada com fechadura multipontos.</span></li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="gut" id="localizacao"><div class="in">
+  <div class="label">Localização</div>
+  <h2 class="h-l rv">No coração da cidade</h2>
+  <div class="loc">
+    <div class="map mask"><img src="img/mapa.jpg" alt="Vista aérea do quarteirão com o lote do Formosa 44 assinalado" loading="lazy"><span class="pin-dot" aria-hidden="true"></span></div>
+    <div class="rv">
+      <p class="addr">Rua Formosa, 38–44<br>Rua Dr. Alves da Veiga, 2–18<br>Porto</p>
+      <p class="lead" style="margin-bottom:24px">Edifício de gaveto com frente para as duas ruas, no centro do Porto.</p>
+      <a class="cta" href="https://www.google.com/maps/search/?api=1&query=Rua%20Formosa%2044%2C%20Porto" target="_blank" rel="noopener">Abrir no Google Maps <span class="arrow">↗</span></a>
+    </div>
+  </div>
+</div></section>
+
+<section class="gut" id="contacto" style="background:var(--night-2)"><div class="in contact">
+  <div>
+    <div class="label">Contacto</div>
+    <h2 class="h-xl rv" style="margin-top:18px">Marque a sua visita</h2>
+    <p class="lead rv" style="margin-top:22px">Qualquer dúvida, contacte-me. Deixe o seu e-mail e diga que apartamentos lhe interessam: respondo com a planta completa, as condições e datas para visitar.</p>
+  </div>
+  <form id="form" novalidate>
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="two">
+      <div class="f"><label for="fNome">Nome</label><input id="fNome" name="name" autocomplete="name" required></div>
+      <div class="f"><label for="fEmail">E-mail</label><input id="fEmail" name="email" type="email" autocomplete="email" required></div>
+    </div>
+    <fieldset class="f picks"><legend>Apartamentos de interesse</legend><div class="chips" id="fInt"><label class="pick"><input type="checkbox" value="B"><span><b>B</b> T0+1 · R/C · 325&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="C"><span><b>C</b> T1 · R/C · 260&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="D"><span><b>D</b> T1 · R/C · 270&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="E"><span><b>E</b> T1+1 · R/C · 375&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="F"><span><b>F</b> T0+1 · 1º · 340&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="J"><span><b>J</b> T1+1 · 1º · 375&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="K"><span><b>K</b> T0+1 · 2º · 350&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="O"><span><b>O</b> T1+1 · 2º · 385&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="T"><span><b>T</b> T1+1 · 3º · 395&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="todos"><span>Ainda não sei / todos</span></label></div></fieldset>
+    <div class="f"><label for="fMsg">Mensagem <span class="opt">(opcional)</span></label><textarea id="fMsg" name="message" placeholder="Por exemplo: gostava de visitar ao sábado de manhã."></textarea></div>
+    <input type="hidden" id="fApts" value="">
+    <p class="err" id="fErr" role="alert" hidden></p>
+    <div><button class="cta fill" id="fSend" type="submit">Enviar pedido <span class="arrow">→</span></button></div>
+    <p class="note">A resposta chega ao e-mail que indicar.</p>
+    <noscript><p class="err">Para enviar o pedido, abra esta página no Safari ou no Chrome.</p></noscript>
+  </form>
+  <div class="sent" id="fOk" hidden><div class="label">Pedido enviado</div><p>Obrigado. Recebemos o seu pedido e vamos responder para <b id="fOkMail"></b>.</p><button class="cta" type="button" id="fAgain">Enviar outro pedido</button></div>
+</div></section>
+
+<footer class="gut"><div class="in"><span>FORMOSA 44 · Rua Formosa, 38–44 · Porto</span><span>Imagens 3D ilustrativas. Áreas segundo o quadro de áreas do empreendimento. Informação não vinculativa.</span></div></footer>
+
+<div class="peek" id="peek" aria-hidden="true"><img id="peekImg" alt=""></div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" aria-hidden="true">
+  <div class="dclose"><span id="dKicker">Fração</span><button class="xbtn" id="dX" aria-label="Fechar">×</button></div>
+  <div class="dimg"><img id="dImg" alt=""><div class="ribbon" id="dSold" hidden><span>VENDIDO</span></div><div class="cap" id="dCap"></div></div>
+  <div class="dbody">
+    <div class="dhead"><div class="L" id="dL"></div><div><h3 id="dTitle"></h3><p id="dSub"></p></div></div>
+    <div class="specs" id="dSpecs"></div>
+    <div class="gp" id="dNote"></div>
+    <button class="plan" id="dPlan" type="button"><img id="dPlanImg" alt=""><span>Ampliar planta</span></button>
+    <div class="buy" id="dBuy">
+      <div class="pr"><small>Preço</small><b id="dPriceTxt">Sob consulta</b></div>
+      <div class="ct">
+        <p>Qualquer dúvida, contacte-me</p>
+        <div class="dacts">
+          <button class="cta fill" id="dVisit" type="button">Pedir informações <span class="arrow">→</span></button>
+          <button class="cta" id="dShare" type="button">Copiar link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+<dialog id="planDlg" aria-label="Planta ampliada"><div class="dh"><span id="planT">Planta</span><button class="xbtn" id="planX" aria-label="Fechar planta">×</button></div><img id="planBig" alt=""></dialog>
+
+<script>
+/* ================= DADOS — editar aqui ================= */
+// Destino dos pedidos: guardado codificado, nunca é mostrado na página nem a quem envia.
+const _D = "bW9jLmxpYW1nQDBzZWF2aXJjc2Vvc25vZmE=";
+const TO = ()=>atob(_D).split("").reverse().join("");
+const PRICES = {B:325000,C:260000,D:270000,E:375000,F:340000,J:375000,K:350000,O:385000,T:395000}; // preços das frações disponíveis
+// Regra: fração com preço = disponível; sem preço = vendida.
+const U = [
+ {f:"A",t:"Loja",abc:40.25,rgeu:null,p:0,o:"Sul",img:"fachada2"},
+ {f:"B",t:"T0+1",abc:65.01,rgeu:81.06,p:0,o:"Poente e Norte",img:"int-b",plan:"b",x:"Pátio de 4 m²"},
+ {f:"C",t:"T1",abc:42.34,rgeu:54.14,p:0,o:"Poente",img:"int-c",plan:"c"},
+ {f:"D",t:"T1",abc:46.27,rgeu:58.07,p:0,o:"Poente",img:"int-din",plan:"d"},
+ {f:"E",t:"T1+1",abc:79.34,rgeu:111.52,p:0,o:"Poente e Sul",img:"int-e",plan:"e",x:"Pátio de 20 m²"},
+ {f:"F",t:"T0+1",abc:66.50,rgeu:78.30,p:1,o:"Norte e Sul",img:"int-fkp",plan:"f"},
+ {f:"G",t:"T1",abc:47.40,rgeu:59.20,p:1,o:"Poente e Sul",img:"int-gl"},
+ {f:"H",t:"T1",abc:42.01,rgeu:53.81,p:1,o:"Poente",img:"int-hm"},
+ {f:"I",t:"T1",abc:44.12,rgeu:55.92,p:1,o:"Poente",img:"int-din"},
+ {f:"J",t:"T1+1",abc:79.34,rgeu:91.14,p:1,o:"Poente e Sul",img:"int-jot",plan:"j",x:"Varanda de 2 m²"},
+ {f:"K",t:"T0+1",abc:66.50,rgeu:78.30,p:2,o:"Norte e Sul",img:"int-fkp",plan:"k"},
+ {f:"L",t:"T1",abc:47.40,rgeu:59.20,p:2,o:"Poente e Sul",img:"int-gl"},
+ {f:"M",t:"T1",abc:42.01,rgeu:53.81,p:2,o:"Poente",img:"int-hm"},
+ {f:"N",t:"T1",abc:44.12,rgeu:55.92,p:2,o:"Poente",img:"int-din"},
+ {f:"O",t:"T1+1",abc:79.34,rgeu:91.14,p:2,o:"Poente e Sul",img:"int-jot",plan:"o",x:"Varanda de 2 m²"},
+ {f:"P",t:"T0+1",abc:66.32,rgeu:78.12,p:3,o:"Norte e Sul",img:"int-fkp"},
+ {f:"Q",t:"T1",abc:46.67,rgeu:58.47,p:3,o:"Poente e Sul",img:"int-q"},
+ {f:"R",t:"T1",abc:41.50,rgeu:53.30,p:3,o:"Poente",img:"int-hm"},
+ {f:"S",t:"T1",abc:43.68,rgeu:55.48,p:3,o:"Poente",img:"int-din"},
+ {f:"T",t:"T1+1",abc:79.18,rgeu:90.98,p:3,o:"Poente e Sul",img:"int-jot",plan:"t",x:"Varanda de 2 m²"}
+];
+U.forEach(u=>u.s=PRICES[u.f]?"d":"v");
+/* ======================================================= */
+
+const $=id=>document.getElementById(id);
+const eur=n=>Math.round(n).toLocaleString("pt-PT")+" €";
+const m2=n=>n.toLocaleString("pt-PT",{minimumFractionDigits:2,maximumFractionDigits:2})+" m²";
+const pisoS=p=>p===0?"R/C":p+"º";
+const pisoL=p=>p===0?"Rés-do-chão":p===3?"3º piso · águas-furtadas":p+"º piso";
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const apts=U.filter(u=>u.t!=="Loja"), leftN=apts.filter(u=>u.s==="d").length;
+const sunTxt={"Sul":"Sol durante grande parte do dia.","Poente":"Sol ao fim da tarde.","Poente e Sul":"Luz de grande parte do dia e sol ao fim da tarde.","Norte e Sul":"Frente e traseiras, com ventilação cruzada.","Poente e Norte":"Luz de dois lados e sol ao fim da tarde."};
+
+$("availTxt").textContent=`${leftN} apartamentos disponíveis`;
+$("numLeft").textContent=leftN; $("numLeft").dataset.n=leftN;
+$("introTxt").innerHTML=[..."FORMOSA 44"].map((c,i)=>`<i style="--d:${i}">${c===" "?"&nbsp;":c}</i>`).join("");
+
+const bar=$("bar"); const onBar=()=>bar.classList.toggle("solid",scrollY>40); addEventListener("scroll",onBar,{passive:true}); onBar();
+
+const man=$("manifest");
+man.innerHTML=man.innerHTML.replace(/(<em>.*?<\/em>)|([^\s<]+)/g,(m)=>`<span class="w">${m}</span>`);
+const words=[...man.querySelectorAll(".w")];
+
+/* Alçado */
+const svg=$("elev"), NS="http://www.w3.org/2000/svg";
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e};
+const X0=40,X1=470, floors={3:[72,150],2:[150,230],1:[230,310],0:[310,400]};
+let selFloor=null, tFilter="Todos"; svg.innerHTML="";
+el("path",{d:`M${X0} 400 V150 L${X0+18} 72 H${X1-18} L${X1} 150 V400`,class:"stroke draw",pathLength:1});
+el("line",{x1:X0-10,y1:400,x2:X1+10,y2:400,class:"stroke"});
+[150,230,310].forEach(y=>el("line",{x1:X0,y1:y,x2:X1,y2:y,class:"thin"}));
+for(let p=0;p<=3;p++){
+  const [y0,y1]=floors[p], g=el("g",{class:"floor",tabindex:0,role:"button","data-p":p,"aria-label":`${pisoL(p)}: ${U.filter(u=>u.p===p&&u.s==="d").length} disponíveis`});
+  el("rect",{x:p===3?X0+10:X0,y:y0,width:p===3?X1-X0-20:X1-X0,height:y1-y0,class:"band"},g);
+  const n=10, w=(X1-X0-40)/n;
+  for(let i=0;i<n;i++){
+    const cx=X0+20+w*i+w/2;
+    if(p===3){ el("path",{d:`M${cx-9} ${y1-14} V${y0+34} L${cx} ${y0+22} L${cx+9} ${y0+34} V${y1-14}`,class:"thin"},g); }
+    else if(p===0){ const door=i===3; el("rect",{x:cx-8,y:door?y0+22:y0+28,width:16,height:door?y1-y0-22:40,class:"thin"},g); }
+    else { el("rect",{x:cx-9,y:y0+16,width:18,height:42,class:"thin"},g); el("rect",{x:cx-12,y:y0+13,width:24,height:48,class:"thin",opacity:.4},g); }
+  }
+  U.filter(u=>u.p===p).forEach((u,i)=>{
+    el("circle",{cx:X1+26+i*13,cy:(y0+y1)/2,r:4.2,fill:u.s==="d"?"#3f7d55":"none",stroke:u.s==="d"?"#3f7d55":"#b8735c","stroke-width":1.2},g);
+  });
+  const t=el("text",{x:X0-34,y:(y0+y1)/2+4},g); t.textContent=pisoS(p);
+  g.addEventListener("click",()=>pickFloor(p)); g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pickFloor(p)}});
+}
+const tl=el("text",{x:X0,y:56}); tl.textContent="● livre ○ vendido";
+function pickFloor(p){ selFloor=selFloor===p?null:p; svg.querySelectorAll(".floor").forEach(g=>g.classList.toggle("sel",+g.dataset.p===selFloor)); renderList(); }
+
+/* Lista */
+$("tabs").innerHTML="";
+["Todos","T1","T0+1","T1+1","Loja"].forEach(t=>{const b=document.createElement("button");b.className="tab";b.textContent=t;b.dataset.t=t;b.onclick=()=>{tFilter=t;renderList()};$("tabs").appendChild(b)});
+$("showSold").onchange=renderList;
+function renderList(){
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.t===tFilter)));
+  const showSold=$("showSold").checked;
+  const rows=U.filter(u=>(tFilter==="Todos"||u.t===tFilter)&&(selFloor===null||u.p===selFloor)&&(showSold||u.s==="d")).sort((a,b)=>(a.s==="v")-(b.s==="v")||a.f.localeCompare(b.f));
+  const ul=$("list"); ul.innerHTML="";
+  if(!rows.length){ul.innerHTML=`<li class="empty">${tFilter==="Loja"?"A loja já foi vendida.":"Nenhuma fração com estes filtros."}</li>`;return}
+  rows.forEach(u=>{
+    const li=document.createElement("li"), b=document.createElement("button");
+    b.className="row"+(u.s==="v"?" sold":""); b.dataset.f=u.f;
+    b.innerHTML=`<span class="L">${u.f}</span><span class="t"><b>${u.t}</b><span>${pisoL(u.p)}</span></span><span class="c hide-s"><small>Área</small>${u.abc.toLocaleString("pt-PT")} m²</span><span class="c hide-s"><small>Orientação</small>${u.o.replace(" e ","/")}</span><span class="st ${u.s}">${u.s==="d"?"Disponível":"Vendido"}</span><span class="go" aria-hidden="true">→</span>`;
+    b.onclick=()=>openU(u.f);
+    b.onmouseenter=()=>{$("peekImg").src=`img/${u.img}.jpg`;$("peek").classList.add("on")};
+    b.onmouseleave=()=>$("peek").classList.remove("on");
+    li.appendChild(b); ul.appendChild(li);
+  });
+}
+const peek=$("peek"); let px=0,py=0,cx=0,cy=0;
+addEventListener("mousemove",e=>{px=e.clientX+24;py=e.clientY-160},{passive:true});
+(function loop(){cx+=(px-cx)*.16;cy+=(py-cy)*.16;peek.style.transform=`translate(${cx}px,${cy}px)`;requestAnimationFrame(loop)})();
+
+/* Galeria */
+$("track").innerHTML="";
+[["int-gl","T1","Frações G e L"],["int-q","Águas-furtadas","Fração Q"],["int-hm","Quarto","Frações H e M"],["int-fkp","T0+1","Frações F, K e P"],["int-e","T1+1 com jardim","Fração E"],["int-din","T1","Frações D, I e N"],["int-jot","T1+1","Frações J, O e T"],["int-c","T1","Fração C"],["int-b","T0+1 com pátio","Fração B"]]
+.forEach(([i,a,b])=>{const f=document.createElement("figure");f.innerHTML=`<div class="im"><img src="img/${i}.jpg" alt="Interior ${a}, ${b}" loading="lazy"></div><figcaption><span>${a}</span><span>${b}</span></figcaption>`;$("track").appendChild(f)});
+
+/* Painel */
+let cur=null, lastFocus=null;
+function similarFor(u){
+  const av=U.filter(x=>x.s==="d"&&x.t===u.t).sort((x,y)=>Math.abs(x.abc-u.abc)-Math.abs(y.abc-u.abc)).slice(0,2);
+  return av.length?`<b>Fração vendida.</b> Disponível com a mesma tipologia: ${av.map(x=>`<button type="button" class="go-u" data-go="${x.f}">fração ${x.f}</button>`).join(" e ")}.`:"<b>Fração vendida.</b>";
+}
+function openU(f){
+  const u=U.find(x=>x.f===f); if(!u) return; cur=u;
+  try{history.replaceState(null,"","#fracao-"+u.f.toLowerCase())}catch(e){}
+  const loja=u.t==="Loja", sold=u.s==="v";
+  $("dKicker").textContent=`Fração ${u.f} · ${sold?"Vendida":"Disponível"}`;
+  $("dImg").src=`img/${u.img}.jpg`; $("dImg").alt=`Imagem 3D, ${loja?"fachada":"interior"} da fração ${u.f}`;
+  $("dCap").textContent=loja?"Fachada · imagem 3D":(u.sim?"Interior de fração semelhante · 3D":"Interior · imagem 3D");
+  $("dSold").hidden=!sold;
+  $("dL").textContent=u.f; $("dTitle").textContent=u.t; $("dSub").textContent=`${pisoL(u.p)}${u.x?" · "+u.x:""}`;
+  $("dSpecs").innerHTML=[["Área bruta privativa",m2(u.abc)],["Área RGEU",u.rgeu?m2(u.rgeu):"—"],["Piso",pisoS(u.p)],["Orientação",u.o]].map(([a,b])=>`<div><small>${a}</small><strong>${b}</strong></div>`).join("");
+  $("dNote").innerHTML=sold?(loja?"<b>Loja vendida.</b>":similarFor(u)):loja?"<b>Espaço comercial</b> no rés-do-chão, virado a sul, para comércio ou serviços.":`<b>${u.o}.</b> ${sunTxt[u.o]||""}`;
+  $("dPlan").hidden=!u.plan; if(u.plan){$("dPlanImg").src=`img/planta-${u.plan}.jpg`;$("dPlanImg").alt=`Planta da fração ${u.f}`}
+  $("dBuy").hidden=sold;
+  const price=PRICES[u.f]; $("dPriceTxt").textContent=price?eur(price):"Sob consulta";
+  $("dShare").textContent="Copiar link";
+  if(!$("drawer").classList.contains("on")){ lastFocus=document.activeElement; $("drawer").classList.add("on"); $("scrim").classList.add("on"); $("drawer").setAttribute("aria-hidden","false"); document.body.style.overflow="hidden"; setTimeout(()=>$("dX").focus({preventScroll:true}),80); }
+  $("drawer").scrollTop=0;
+}
+function closeU(){
+  $("drawer").classList.remove("on"); $("scrim").classList.remove("on"); $("drawer").setAttribute("aria-hidden","true"); document.body.style.overflow="";
+  try{ if(/^#fracao-/.test(location.hash)) history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+  if(lastFocus) lastFocus.focus({preventScroll:true});
+}
+$("dNote").addEventListener("click",e=>{const b=e.target.closest(".go-u"); if(b) openU(b.dataset.go)});
+$("dVisit").onclick=()=>{ pickOnly(cur.f); closeU(); setTimeout(()=>{$("contacto").scrollIntoView({behavior:reduce?"auto":"smooth"}); setTimeout(()=>$("fNome").focus({preventScroll:true}),700)},250); };
+$("dX").onclick=closeU; $("scrim").onclick=closeU;
+addEventListener("keydown",e=>{ if(e.key==="Escape" && $("drawer").classList.contains("on") && !$("planDlg").open) closeU(); });
+$("dPlan").onclick=()=>{ $("planBig").src=$("dPlanImg").src; $("planBig").alt=$("dPlanImg").alt; $("planT").textContent=`Planta · fração ${cur.f}`; $("planDlg").showModal(); };
+$("planX").onclick=()=>$("planDlg").close();
+$("planDlg").addEventListener("click",e=>{if(e.target===$("planDlg"))$("planDlg").close()});
+$("dShare").onclick=async()=>{ let base=location.href.split("#")[0]; const url=base+"#fracao-"+cur.f.toLowerCase();
+  try{await navigator.clipboard.writeText(url);$("dShare").textContent="Link copiado"}catch(e){$("dShare").textContent="#fracao-"+cur.f.toLowerCase()} };
+function route(){ const m=location.hash.match(/^#fracao-([a-t])$/); if(m) openU(m[1].toUpperCase()); else if($("drawer").classList.contains("on")) closeU(); }
+addEventListener("hashchange",route);
+
+/* Formulário (e-mail via Web3Forms) */
+const avail=U.filter(u=>u.s==="d");
+$("fInt").innerHTML=avail.map(u=>`<label class="pick"><input type="checkbox" value="${u.f}"><span><b>${u.f}</b> ${u.t} · ${pisoS(u.p)} · ${eur(PRICES[u.f])}</span></label>`).join("")+`<label class="pick"><input type="checkbox" value="todos"><span>Ainda não sei / todos</span></label>`;
+const boxes=()=>[...$("fInt").querySelectorAll("input")];
+function pickOnly(f){ boxes().forEach(b=>b.checked=b.value===f); }
+function chosen(){ return boxes().filter(b=>b.checked).map(b=>{ if(b.value==="todos") return "Ainda não sabe / todos"; const u=U.find(x=>x.f===b.value); return `Fração ${u.f} (${u.t}, ${pisoL(u.p)}, ${eur(PRICES[u.f])})`; }).join("; "); }
+const err=t=>{$("fErr").textContent=t;$("fErr").hidden=!t};
+$("form").addEventListener("submit",async e=>{
+  e.preventDefault(); err("");
+  const n=$("fNome").value.trim(), m=$("fEmail").value.trim();
+  if(!n){err("Escreva o seu nome.");$("fNome").focus();return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)){err("Escreva um e-mail válido para podermos responder.");$("fEmail").focus();return}
+  $("fApts").value=chosen()||"Não indicou";
+  const btn=$("fSend"); btn.disabled=true; btn.innerHTML="A enviar…";
+  try{
+    const data={name:n,email:m,_replyto:m,apartamentos:$("fApts").value,mensagem:$("fMsg").value.trim()||"(sem mensagem)",_subject:"Formosa 44 · pedido de "+n,_template:"table",_captcha:"false",_honey:$("form").elements._honey.value};
+    const r=await fetch("https://formsubmit.co/ajax/"+TO(),{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(data)});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||String(j.success)!=="true") throw new Error(j.message||"erro");
+    $("fOkMail").textContent=m; $("form").hidden=true; $("fOk").hidden=false;
+  }catch(x){ err("Não foi possível enviar agora. Verifique a ligação à internet e tente de novo."); }
+  btn.disabled=false; btn.innerHTML='Enviar pedido <span class="arrow">→</span>';
+});
+$("fAgain").onclick=()=>{ $("form").reset(); $("fOk").hidden=true; $("form").hidden=false; };
+
+/* Revelações, contadores, paralaxe, galeria fixa */
+const vh=()=>innerHeight;
+document.querySelectorAll(".rv,.mask").forEach(n=>{ if(!reduce && n.getBoundingClientRect().top>vh()*.92) n.classList.add("pre"); });
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.remove("pre"); io.unobserve(e.target);} }),{threshold:.12,rootMargin:"0px 0px -6% 0px"});
+document.querySelectorAll(".pre").forEach(n=>io.observe(n));
+const cio=new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; cio.unobserve(e.target); if(reduce) return;
+  const b=e.target, to=+b.dataset.n, t0=performance.now(); (function step(t){const k=Math.min(1,Math.max(0,(t-t0)/1400));b.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step)})(t0); }),{threshold:.6});
+document.querySelectorAll(".nums b").forEach(b=>{ if(b.getBoundingClientRect().top>vh()) cio.observe(b); });
+
+const plxImg=document.querySelector("#plx img"), hs=$("interiores"), track=$("track"), prog=$("prog"), heroBg=$("heroBg");
+function onScroll(){
+  const y=scrollY, H=vh();
+  const r=man.getBoundingClientRect(); const k=Math.min(1,Math.max(0,(H*.85-r.top)/(r.height+H*.35)));
+  const lit=Math.round(k*words.length); words.forEach((w,i)=>w.classList.toggle("on",reduce||i<lit));
+  if(reduce) return;
+  const pr=plxImg.parentElement.getBoundingClientRect(); if(pr.bottom>0&&pr.top<H){ plxImg.style.translate=`0 ${((pr.top+pr.height/2)-H/2)*-.12}px`; }
+  if(y<H) heroBg.style.translate=`0 ${y*.25}px`;
+  if(matchMedia("(min-width:761px)").matches){
+    const hr=hs.getBoundingClientRect(), total=hs.offsetHeight-H, p=Math.min(1,Math.max(0,-hr.top/total));
+    const dist=Math.max(0,track.scrollWidth-innerWidth+40); track.style.transform=`translateX(${-p*dist}px)`; prog.style.width=(p*100)+"%";
+  }
+}
+addEventListener("scroll",onScroll,{passive:true}); addEventListener("resize",onScroll);
+renderList(); onScroll(); route();
+</script>
+
+</body>
+</html>
