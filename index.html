@@ -441,8 +441,9 @@ dialog .dh{display:flex;justify-content:space-between;align-items:center;padding
 <script>
 /* ================= DADOS — editar aqui ================= */
 // Destino dos pedidos: guardado codificado, nunca é mostrado na página nem a quem envia.
-const _D = "bW9jLmxpYW1nQDBzZWF2aXJjc2Vvc25vZmE=";
+const _D = "";   // já não é usado: o destino fica guardado na conta Web3Forms
 const TO = ()=>atob(_D).split("").reverse().join("");
+const W3F_KEY = "532601c4-d258-4075-bf7c-72afc90a5ba9";   // chave da Web3Forms (não revela o e-mail). Se estiver vazia, usa o FormSubmit.
 const PRICES = {B:325000,C:260000,D:270000,E:375000,F:340000,J:375000,K:350000,O:385000,T:395000}; // preços das frações disponíveis
 // Regra: fração com preço = disponível; sem preço = vendida.
 const U = [
@@ -602,6 +603,12 @@ $("form").addEventListener("submit",async e=>{
   const btn=$("fSend"); btn.disabled=true; btn.innerHTML="A enviar…";
   try{
     const data={name:n,email:m,_replyto:m,apartamentos:$("fApts").value,mensagem:$("fMsg").value.trim()||"(sem mensagem)",_subject:"Formosa 44 · pedido de "+n,_template:"table",_captcha:"false",_honey:$("form").elements._honey.value};
+    if(W3F_KEY){
+      const r=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({access_key:W3F_KEY,subject:"Formosa 44 · pedido de "+n,from_name:"Site Formosa 44",name:n,email:m,replyto:m,apartamentos:$("fApts").value,mensagem:data.mensagem,botcheck:data._honey})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok||j.success!==true) throw new Error(j.message||"erro");
+      $("fOkMail").textContent=m; $("form").hidden=true; $("fOk").hidden=false; btn.disabled=false; btn.innerHTML='Enviar pedido <span class="arrow">→</span>'; return;
+    }
     const r=await fetch("https://formsubmit.co/ajax/"+TO(),{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(data)});
     const j=await r.json().catch(()=>({}));
     if(String(j.success)!=="true"){
@@ -612,11 +619,12 @@ $("form").addEventListener("submit",async e=>{
   }catch(x){
     // Alternativa: envio clássico (abre a página de confirmação e volta ao site)
     try{ sessionStorage.setItem("f44mail",m) }catch(e){}
-    const f=document.createElement("form"); f.method="POST"; f.action="https://formsubmit.co/"+TO(); f.style.display="none";
+    const f=document.createElement("form"); f.method="POST"; f.action=W3F_KEY?"https://api.web3forms.com/submit":"https://formsubmit.co/"+TO(); f.style.display="none";
     const add=(k,v)=>{const i=document.createElement("input");i.type="hidden";i.name=k;i.value=v;f.appendChild(i)};
     add("name",n);add("email",m);add("apartamentos",$("fApts").value);add("mensagem",$("fMsg").value.trim()||"(sem mensagem)");
     add("_subject","Formosa 44 · pedido de "+n);add("_template","table");add("_captcha","false");
     add("_next",location.href.split("#")[0]+"#enviado");
+    if(W3F_KEY){ add("access_key",W3F_KEY); add("subject","Formosa 44 · pedido de "+n); add("redirect",location.href.split("#")[0]+"#enviado"); }
     document.body.appendChild(f); f.submit(); return;
   }
   btn.disabled=false; btn.innerHTML='Enviar pedido <span class="arrow">→</span>';
