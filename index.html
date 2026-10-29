@@ -402,7 +402,7 @@ dialog .dh{display:flex;justify-content:space-between;align-items:center;padding
       <div class="f"><label for="fEmail">E-mail</label><input id="fEmail" name="email" type="email" autocomplete="email" required></div>
     </div>
     <fieldset class="f picks"><legend>Apartamentos de interesse</legend><div class="chips" id="fInt"><label class="pick"><input type="checkbox" value="B"><span><b>B</b> T0+1 · R/C · 325&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="C"><span><b>C</b> T1 · R/C · 260&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="D"><span><b>D</b> T1 · R/C · 270&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="E"><span><b>E</b> T1+1 · R/C · 375&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="F"><span><b>F</b> T0+1 · 1º · 340&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="J"><span><b>J</b> T1+1 · 1º · 375&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="K"><span><b>K</b> T0+1 · 2º · 350&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="O"><span><b>O</b> T1+1 · 2º · 385&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="T"><span><b>T</b> T1+1 · 3º · 395&nbsp;000 €</span></label><label class="pick"><input type="checkbox" value="todos"><span>Ainda não sei / todos</span></label></div></fieldset>
-    <div class="f"><label for="fMsg">Mensagem <span class="opt">(opcional)</span></label><textarea id="fMsg" name="message" placeholder="Por exemplo: gostava de visitar ao sábado de manhã."></textarea></div>
+    <div class="f"><label for="fMsg">Mensagem <span class="opt">(pode alterar)</span></label><textarea id="fMsg" name="message" placeholder="Por exemplo: gostava de visitar ao sábado de manhã."></textarea></div>
     <input type="hidden" id="fApts" value="">
     <p class="err" id="fErr" role="alert" hidden></p>
     <div><button class="cta fill" id="fSend" type="submit">Enviar pedido <span class="arrow">→</span></button></div>
@@ -591,9 +591,21 @@ addEventListener("hashchange",route);
 const avail=U.filter(u=>u.s==="d");
 $("fInt").innerHTML=avail.map(u=>`<label class="pick"><input type="checkbox" value="${u.f}"><span><b>${u.f}</b> ${u.t} · ${pisoS(u.p)} · ${eur(PRICES[u.f])}</span></label>`).join("")+`<label class="pick"><input type="checkbox" value="todos"><span>Ainda não sei / todos</span></label>`;
 const boxes=()=>[...$("fInt").querySelectorAll("input")];
-function pickOnly(f){ boxes().forEach(b=>b.checked=b.value===f); }
+let msgTouched=false;
+function autoMsg(){
+  const sel=boxes().filter(b=>b.checked&&b.value!=="todos").map(b=>U.find(x=>x.f===b.value));
+  if(!sel.length) return "Olá, tenho interesse nos apartamentos do Formosa 44 e gostava de receber mais informações e marcar uma visita.";
+  const t=sel.map(u=>`${u.f} (${u.t}, ${u.p===0?"rés-do-chão":u.p+"º piso"})`);
+  const lst=t.length>1?t.slice(0,-1).join(", ")+" e "+t[t.length-1]:t[0];
+  return `Olá, tenho interesse ${sel.length>1?"nas frações":"na fração"} ${lst} do Formosa 44 e gostava de receber mais informações e marcar uma visita.`;
+}
+function syncMsg(){ if(!msgTouched) $("fMsg").value=autoMsg(); }
+$("fMsg").addEventListener("input",()=>{ msgTouched=$("fMsg").value.trim()!=="" });
+$("fInt").addEventListener("change",syncMsg);
+function pickOnly(f){ boxes().forEach(b=>b.checked=b.value===f); syncMsg(); }
 function chosen(){ return boxes().filter(b=>b.checked).map(b=>{ if(b.value==="todos") return "Ainda não sabe / todos"; const u=U.find(x=>x.f===b.value); return `Fração ${u.f} (${u.t}, ${pisoL(u.p)}, ${eur(PRICES[u.f])})`; }).join("; "); }
 const err=t=>{$("fErr").textContent=t;$("fErr").hidden=!t};
+syncMsg();
 $("form").addEventListener("submit",async e=>{
   e.preventDefault(); err("");
   const n=$("fNome").value.trim(), m=$("fEmail").value.trim();
@@ -629,7 +641,7 @@ $("form").addEventListener("submit",async e=>{
   }
   btn.disabled=false; btn.innerHTML='Enviar pedido <span class="arrow">→</span>';
 });
-$("fAgain").onclick=()=>{ $("form").reset(); $("fOk").hidden=true; $("form").hidden=false; };
+$("fAgain").onclick=()=>{ $("form").reset(); msgTouched=false; syncMsg(); $("fOk").hidden=true; $("form").hidden=false; };
 
 /* Revelações, contadores, paralaxe, galeria fixa */
 const vh=()=>innerHeight;
